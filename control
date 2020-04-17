@@ -1,7 +1,7 @@
 Package: com.johnzaro.perfectcontrolcenter
 Name: PerfectControlCenter
 Depends: mobilesubstrate, preferenceloader, ws.hbang.common (>= 1.14), firmware (>= 13)
-Version: 1.0
+Version: 1.1
 Architecture: iphoneos-arm
 Description: Makes Control Center Modules Round, More Features Soon
 Maintainer: Johnzaro <johnzrgnns@gmail.com>

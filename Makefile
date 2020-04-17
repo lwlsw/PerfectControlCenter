@@ -1,5 +1,5 @@
 THEOS_DEVICE_IP = iphone
-ARCHS = arm64
+ARCHS = arm64 arm64e
 TARGET = iphone:clang:13.2:13.2
 
 INSTALL_TARGET_PROCESSES = SpringBoard
