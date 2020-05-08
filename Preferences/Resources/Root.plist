@@ -13,9 +13,9 @@
 			<string>PCCHeader.png</string>
 		</dict>
 		<dict>
-        	<key>cell</key>
+			<key>cell</key>
 			<string>PSGroupCell</string>
-        </dict>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -29,15 +29,13 @@
 			<string>Enabled</string>
 		</dict>
 		<dict>
-        	<key>cell</key>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>SETTINGS</string>
 			<key>footerText</key>
-			<string>MORE FEATURES WILL COME SOON!</string>
-			<key>footerAlignment</key>
-			<integer>1</integer>
-        </dict>
+			<string>'CONTROL CENTER TO THE BOTTOM' OPTION MOVES THE CONTROL CENTER MODULES TO THE BOTTOM OF THE SCREEN. IT WORKS ON IPHONE ONLY.</string>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -51,11 +49,43 @@
 			<string>Round CC Modules</string>
 		</dict>
 		<dict>
-        	<key>cell</key>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>hideControlCenterStatusBar</string>
+			<key>label</key>
+			<string>Hide Control Center Status Bar</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>moveControlCenterToTheBottom</string>
+			<key>label</key>
+			<string>Control Center To The Bottom</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>MORE FEATURES WILL COME SOON!</string>
+			<key>alignment</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
 			<string>WHEN RESETING, RESPRING WILL OCCUR</string>
-        </dict>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
@@ -65,11 +95,11 @@
 			<string>Reset All Settings</string>
 		</dict>
 		<dict>
-        	<key>cell</key>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>ABOUT THIS TWEAK</string>
-        </dict>
+		</dict>
 		<dict>
 			<key>cellClass</key>
 			<string>HBLinkTableCell</string>
@@ -81,45 +111,45 @@
    	 		<string>https://github.com/johnzaro/PerfectControlCenter</string>
 		</dict>
  		<dict>
-        	<key>cell</key>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>ABOUT ME</string>
 			<key>footerText</key>
 			<string>© 2020 John Zarogiannis (johnzaro)</string>
-        </dict>
+		</dict>
 		<dict>
 			<key>big</key>
-    		<true/>
-            <key>cellClass</key>
-            <string>HBTwitterCell</string>
+			<true/>
+			<key>cellClass</key>
+			<string>HBTwitterCell</string>
 			<key>height</key>
-    		<integer>56</integer>
-            <key>label</key>
-            <string>John Zarogiannis</string>
-            <key>user</key>
-            <string>johnzaro</string>
-        </dict>
-        <dict>
-            <key>cell</key>
-            <string>PSButtonCell</string>
-            <key>label</key>
-            <string>Email Me</string>
-            <key>action</key>
-            <string>email</string>
-            <key>icon</key>
-            <string>email.png</string>
-        </dict>
+			<integer>56</integer>
+			<key>label</key>
+			<string>John Zarogiannis</string>
+			<key>user</key>
+			<string>johnzaro</string>
+		</dict>
 		<dict>
-            <key>cell</key>
-            <string>PSButtonCell</string>
-            <key>label</key>
-            <string>Check me on Reddit</string>
-            <key>action</key>
-            <string>reddit</string>
-            <key>icon</key>
-            <string>reddit.png</string>
-        </dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Email Me</string>
+			<key>action</key>
+			<string>email</string>
+			<key>icon</key>
+			<string>email.png</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Check me on Reddit</string>
+			<key>action</key>
+			<string>reddit</string>
+			<key>icon</key>
+			<string>reddit.png</string>
+		</dict>
 		<dict>
 			<key>cellClass</key>
 			<string>HBLinkTableCell</string>
@@ -129,7 +159,7 @@
 			<string>donate.png</string>
 			<key>url</key>
    	 		<string>https://paypal.me/JohnZarogiannis</string>
-        </dict>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>perfectcontrolcenter</string>

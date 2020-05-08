@@ -1,10 +1,16 @@
 #import "PerfectControlCenter.h"
-
 #import <Cephei/HBPreferences.h>
+
+#define IS_iPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
 static HBPreferences *pref;
 static BOOL enabled;
 static BOOL roundCCModules;
+static BOOL hideControlCenterStatusBar;
+static BOOL moveControlCenterToTheBottom;
+
+static CGRect originalControlCenterStatusBarFrame;
+static BOOL validOriginalControlCenterStatusBarFrame;
 
 %group roundCCModulesGroup
 
@@ -63,6 +69,78 @@ static BOOL roundCCModules;
 
 %end
 
+%group hideControlCenterStatusBarGroup
+
+	%hook CCUIModularControlCenterOverlayViewController
+
+	- (CCUIHeaderPocketView*)overlayHeaderView
+	{
+		return nil;
+	}
+
+	%end
+
+%end
+
+// Original Tweak by @himynameisubik: https://github.com/himynameisubik/StayLowCC
+
+%group moveControlCenterToTheBottomGroup
+
+	%hook CCUIModularControlCenterOverlayViewController
+
+	- (void)presentAnimated: (BOOL)arg1 withCompletionHandler: (/*^block*/id)arg2
+	{
+		%orig;
+		[self moveToBottom];
+	}
+
+	- (void)dismissAnimated: (BOOL)arg1 withCompletionHandler: (/*^block*/id)arg2
+	{
+		if(!hideControlCenterStatusBar)
+			[self fixStatusBarOnDismiss];
+		%orig;
+	}
+
+	%new
+	- (void)fixStatusBarOnDismiss
+	{
+		if(validOriginalControlCenterStatusBarFrame)
+		{
+			[[self overlayHeaderView] setFrame: originalControlCenterStatusBarFrame];
+			validOriginalControlCenterStatusBarFrame = NO;
+		}
+	}
+
+	%new
+	- (void)moveToBottom
+	{
+		if([self overlayInterfaceOrientation] == 1)
+		{
+			CGRect overlayContainerViewFrame = [[self overlayContainerView] frame];
+			overlayContainerViewFrame.origin.y = 
+				[[self overlayScrollView] frame].size.height - [[self overlayContainerView] frame].size.height - 124;
+			[[self overlayContainerView] setFrame: overlayContainerViewFrame];
+
+			if(!hideControlCenterStatusBar)
+			{
+				if(!validOriginalControlCenterStatusBarFrame)
+				{
+					originalControlCenterStatusBarFrame = [[self overlayHeaderView] frame];
+					validOriginalControlCenterStatusBarFrame = YES;
+				}
+				CGRect overlayHeaderViewFrame = [[self overlayHeaderView] frame];
+				overlayHeaderViewFrame.origin.y = 
+					[[self overlayScrollView] frame].size.height - [[self overlayContainerView] frame].size.height 
+					- [[self overlayHeaderView] frame].size.height - 20;
+				[[self overlayHeaderView] setFrame: overlayHeaderViewFrame];
+			}
+		}
+	}
+
+	%end
+
+%end
+
 %ctor
 {
 	@autoreleasepool
@@ -71,15 +149,21 @@ static BOOL roundCCModules;
 		[pref registerDefaults:
 		@{
 			@"enabled": @NO,
-			@"roundCCModules": @NO
+			@"roundCCModules": @NO,
+			@"hideControlCenterStatusBar": @NO,
+			@"moveControlCenterToTheBottom": @NO
     	}];
 
 		enabled = [pref boolForKey: @"enabled"];
 		if(enabled)
 		{
 			roundCCModules = [pref boolForKey: @"roundCCModules"];
+			hideControlCenterStatusBar = [pref boolForKey: @"hideControlCenterStatusBar"];
+			moveControlCenterToTheBottom = [pref boolForKey: @"moveControlCenterToTheBottom"];
 
 			if(roundCCModules) %init(roundCCModulesGroup);
+			if(hideControlCenterStatusBar) %init(hideControlCenterStatusBarGroup);
+			if(moveControlCenterToTheBottom && !IS_iPAD) %init(moveControlCenterToTheBottomGroup);
 		}
 	}
 }
