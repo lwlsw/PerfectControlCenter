@@ -17,3 +17,8 @@
 - (void)fixStatusBarOnDismiss;
 - (void)moveToBottom;
 @end
+
+@interface CCUIBaseSliderView: UIView
+@property(nonatomic, retain) UILabel *percentLabel;
+- (float)value;
+@end

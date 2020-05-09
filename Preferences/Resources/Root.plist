@@ -56,6 +56,18 @@
 			<key>defaults</key>
 			<string>com.johnzaro.perfectcontrolcenterprefs</string>
 			<key>key</key>
+			<string>showSliderPercentage</string>
+			<key>label</key>
+			<string>Show Percentage On Sliders</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
 			<string>hideControlCenterStatusBar</string>
 			<key>label</key>
 			<string>Hide Control Center Status Bar</string>

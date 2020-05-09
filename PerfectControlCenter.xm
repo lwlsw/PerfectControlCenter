@@ -6,11 +6,14 @@
 static HBPreferences *pref;
 static BOOL enabled;
 static BOOL roundCCModules;
+static BOOL showSliderPercentage;
 static BOOL hideControlCenterStatusBar;
 static BOOL moveControlCenterToTheBottom;
 
 static CGRect originalControlCenterStatusBarFrame;
 static BOOL validOriginalControlCenterStatusBarFrame;
+
+// MAKE CONTROL CENTER TOGGLES ROUND
 
 %group roundCCModulesGroup
 
@@ -69,6 +72,49 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 
 %end
 
+// SHOW PERCENTAGE ON CONTROL CENTER SLIDERS
+
+// Original Tweak by @baptistecdr: https://github.com/baptistecdr/SugarCane
+
+%group showSliderPercentageGroup
+
+	%hook CCUIBaseSliderView
+
+	%property(nonatomic, retain) UILabel *percentLabel;
+
+	- (id)initWithFrame: (CGRect)frame
+	{
+		self = %orig;
+
+		[self setPercentLabel: [[UILabel alloc] init]];
+		[[self percentLabel] setFont: [UIFont systemFontOfSize: 15]];
+		
+		return self;
+	}
+
+	- (void)layoutSubviews
+	{
+		%orig;
+
+		UIView *glyphView = (UIView*)[self valueForKey: @"_glyphPackageView"];
+		if([[self percentLabel] superview] != glyphView)
+		{
+			if([[self percentLabel] superview])
+				[[self percentLabel] removeFromSuperview];
+			[glyphView addSubview: [self percentLabel]];
+		}
+
+		[[self percentLabel] setText: [NSString stringWithFormat: @"%.0f%%", [self value] * 100]];
+		[[self percentLabel] sizeToFit];
+		[[self percentLabel] setCenter: [self convertPoint: CGPointMake([self bounds].size.width * 0.5, [self bounds].size.height * 0.5) toView: glyphView]];
+	}
+
+	%end
+
+%end
+
+// HIDE STATUS BAR ON CONTROL CENTER
+
 %group hideControlCenterStatusBarGroup
 
 	%hook CCUIModularControlCenterOverlayViewController
@@ -81,6 +127,8 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 	%end
 
 %end
+
+// MOVE CONTROL CENTER TO THE BOTTOM OF THE SCREEN
 
 // Original Tweak by @himynameisubik: https://github.com/himynameisubik/StayLowCC
 
@@ -150,18 +198,21 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 		@{
 			@"enabled": @NO,
 			@"roundCCModules": @NO,
+			@"showSliderPercentage": @NO,
 			@"hideControlCenterStatusBar": @NO,
 			@"moveControlCenterToTheBottom": @NO
     	}];
-
+		
 		enabled = [pref boolForKey: @"enabled"];
 		if(enabled)
 		{
 			roundCCModules = [pref boolForKey: @"roundCCModules"];
+			showSliderPercentage = [pref boolForKey: @"showSliderPercentage"];
 			hideControlCenterStatusBar = [pref boolForKey: @"hideControlCenterStatusBar"];
 			moveControlCenterToTheBottom = [pref boolForKey: @"moveControlCenterToTheBottom"];
 
 			if(roundCCModules) %init(roundCCModulesGroup);
+			if(showSliderPercentage) %init(showSliderPercentageGroup);
 			if(hideControlCenterStatusBar) %init(hideControlCenterStatusBarGroup);
 			if(moveControlCenterToTheBottom && !IS_iPAD) %init(moveControlCenterToTheBottomGroup);
 		}
