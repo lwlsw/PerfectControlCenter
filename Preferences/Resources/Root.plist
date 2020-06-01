@@ -32,7 +32,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>SETTINGS</string>
+			<string>GENERAL</string>
 			<key>footerText</key>
 			<string>'CONTROL CENTER TO THE BOTTOM' OPTION MOVES THE CONTROL CENTER MODULES TO THE BOTTOM OF THE SCREEN. IT WORKS ON IPHONE ONLY.</string>
 		</dict>
@@ -88,9 +88,205 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>MORE FEATURES WILL COME SOON!</string>
+			<string>--- CONNECTIVITY MODULE ---</string>
 			<key>alignment</key>
 			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>turnOffOnTap</string>
+			<key>label</key>
+			<string>Turn Off Toggles On Tap</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>customConnectivitySizeEnabled</string>
+			<key>label</key>
+			<string>Custom Size (Rows X Columns)</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>2</integer>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>connectivityRows</string>
+			<key>validTitles</key>
+			<array>
+      			<string>1</string>
+      			<string>2</string>
+      			<string>3</string>
+				<string>4</string>
+			</array>
+      		<key>validValues</key>
+			<array>
+      			<string>1</string>
+      			<string>2</string>
+      			<string>3</string>
+				<string>4</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>2</integer>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>connectivityColumns</string>
+			<key>validTitles</key>
+			<array>
+      			<string>1</string>
+      			<string>2</string>
+      			<string>3</string>
+				<string>4</string>
+			</array>
+      		<key>validValues</key>
+			<array>
+      			<string>1</string>
+      			<string>2</string>
+      			<string>3</string>
+				<string>4</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>--- MUSIC MODULE ---</string>
+			<key>alignment</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>customMusicSizeEnabled</string>
+			<key>label</key>
+			<string>Custom Size</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>1</integer>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>musicSize</string>
+			<key>validTitles</key>
+			<array>
+      			<string>3 X 2</string>
+      			<string>4 X 2</string>
+			</array>
+      		<key>validValues</key>
+			<array>
+      			<string>1</string>
+      			<string>2</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>--- POWER MODULE ---</string>
+			<key>alignment</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>respringConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before Respring</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>ldRestartConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before LDRestart</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>safeModeConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before Safe Mode</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>uiCacheConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before UICache</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>powerOffConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before Power Off</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectcontrolcenterprefs</string>
+			<key>key</key>
+			<string>rebootConfirmation</string>
+			<key>label</key>
+			<string>Confirmation Before Reboot</string>
 		</dict>
 		<dict>
 			<key>cell</key>

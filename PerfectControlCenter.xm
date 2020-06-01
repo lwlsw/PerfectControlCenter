@@ -1,17 +1,20 @@
 #import "PerfectControlCenter.h"
-#import <Cephei/HBPreferences.h>
+#import "ControlCenterPreferences.h"
 
-#define IS_iPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-
-static HBPreferences *pref;
-static BOOL enabled;
-static BOOL roundCCModules;
-static BOOL showSliderPercentage;
-static BOOL hideControlCenterStatusBar;
-static BOOL moveControlCenterToTheBottom;
+static ControlCenterPreferences *preferences;
 
 static CGRect originalControlCenterStatusBarFrame;
 static BOOL validOriginalControlCenterStatusBarFrame;
+
+static BOOL bluetoothEnabled;
+
+#if __cplusplus
+    extern "C" {
+#endif
+  extern CGFloat MediaControlsMaxWidthOfCondensedModule;
+#if __cplusplus
+}
+#endif
 
 // MAKE CONTROL CENTER TOGGLES ROUND
 
@@ -144,7 +147,7 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 
 	- (void)dismissAnimated: (BOOL)arg1 withCompletionHandler: (/*^block*/id)arg2
 	{
-		if(!hideControlCenterStatusBar)
+		if(![preferences hideControlCenterStatusBar])
 			[self fixStatusBarOnDismiss];
 		%orig;
 	}
@@ -169,7 +172,7 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 				[[self overlayScrollView] frame].size.height - [[self overlayContainerView] frame].size.height - 124;
 			[[self overlayContainerView] setFrame: overlayContainerViewFrame];
 
-			if(!hideControlCenterStatusBar)
+			if(![preferences hideControlCenterStatusBar])
 			{
 				if(!validOriginalControlCenterStatusBarFrame)
 				{
@@ -189,32 +192,80 @@ static BOOL validOriginalControlCenterStatusBarFrame;
 
 %end
 
-%ctor
+%group turnOffOnTapGroup
+
+	// Original tweak by @jakeajames: https://github.com/jakeajames/RealCC
+
+	%hook CCUILabeledRoundButton
+
+	- (void)buttonTapped: (id)arg1
+	{
+		%orig;
+
+		if([self.title isEqualToString: [[NSBundle bundleWithPath: @"/System/Library/ControlCenter/Bundles/ConnectivityModule.bundle"] localizedStringForKey: @"CONTROL_CENTER_STATUS_WIFI_NAME" value: @"CONTROL_CENTER_STATUS_WIFI_NAME" table: @"Localizable"]] 
+		|| [self.title isEqualToString: [[NSBundle bundleWithPath: @"/System/Library/ControlCenter/Bundles/ConnectivityModule.bundle"] localizedStringForKey: @"CONTROL_CENTER_STATUS_WLAN_NAME" value: @"CONTROL_CENTER_STATUS_WLAN_NAME" table: @"Localizable"]])
+		{
+			SBWiFiManager *wifiManager = (SBWiFiManager*)[%c(SBWiFiManager) sharedInstance];
+			if([wifiManager wiFiEnabled])
+				[wifiManager setWiFiEnabled: NO];
+		}
+
+		if([self.title isEqualToString: [[NSBundle bundleWithPath: @"/System/Library/ControlCenter/Bundles/ConnectivityModule.bundle"] localizedStringForKey: @"CONTROL_CENTER_STATUS_BLUETOOTH_NAME" value: @"CONTROL_CENTER_STATUS_BLUETOOTH_NAME" table: @"Localizable"]])
+		{
+			BluetoothManager *bluetoothManager = (BluetoothManager*)[%c(BluetoothManager) sharedInstance];
+			BOOL enabled = [bluetoothManager enabled];
+
+			if(enabled)
+			{
+				[bluetoothManager setEnabled: NO];
+				[bluetoothManager setPowered: NO];
+
+				bluetoothEnabled = NO;
+			}
+			else
+				bluetoothEnabled = YES;
+		}
+	}
+
+	%end
+
+	%hook BluetoothManager
+
+	-(BOOL)enabled
+	{
+		bluetoothEnabled = !%orig;
+		return %orig;
+	}
+
+	- (BOOL)setEnabled: (BOOL)arg1
+	{
+		return %orig(bluetoothEnabled);
+	}
+
+	- (BOOL)setPowered: (BOOL)arg1
+	{
+		return %orig(bluetoothEnabled);
+	}
+
+	%end
+
+%end
+
+void initPerfectControlCenter()
 {
 	@autoreleasepool
 	{
-		pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectcontrolcenterprefs"];
-		[pref registerDefaults:
-		@{
-			@"enabled": @NO,
-			@"roundCCModules": @NO,
-			@"showSliderPercentage": @NO,
-			@"hideControlCenterStatusBar": @NO,
-			@"moveControlCenterToTheBottom": @NO
-    	}];
+		preferences = [ControlCenterPreferences sharedInstance];
 		
-		enabled = [pref boolForKey: @"enabled"];
-		if(enabled)
-		{
-			roundCCModules = [pref boolForKey: @"roundCCModules"];
-			showSliderPercentage = [pref boolForKey: @"showSliderPercentage"];
-			hideControlCenterStatusBar = [pref boolForKey: @"hideControlCenterStatusBar"];
-			moveControlCenterToTheBottom = [pref boolForKey: @"moveControlCenterToTheBottom"];
-
-			if(roundCCModules) %init(roundCCModulesGroup);
-			if(showSliderPercentage) %init(showSliderPercentageGroup);
-			if(hideControlCenterStatusBar) %init(hideControlCenterStatusBarGroup);
-			if(moveControlCenterToTheBottom && !IS_iPAD) %init(moveControlCenterToTheBottomGroup);
-		}
+		if([preferences roundCCModules])
+			%init(roundCCModulesGroup);
+		if([preferences showSliderPercentage])
+			%init(showSliderPercentageGroup);
+		if([preferences hideControlCenterStatusBar])
+			%init(hideControlCenterStatusBarGroup);
+		if([preferences moveControlCenterToTheBottom] && ![preferences isIpad])
+			%init(moveControlCenterToTheBottomGroup);
+		if([preferences turnOffOnTap])
+			%init(turnOffOnTapGroup);
 	}
 }

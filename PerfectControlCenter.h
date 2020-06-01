@@ -1,4 +1,4 @@
-@interface MTMaterialView: UIView
+@interface MTMaterialView : UIView
 @end
 
 @interface CCUIContentModuleContentContainerView: UIView
@@ -21,4 +21,22 @@
 @interface CCUIBaseSliderView: UIView
 @property(nonatomic, retain) UILabel *percentLabel;
 - (float)value;
+@end
+
+@interface CCUILabeledRoundButton
+@property(nonatomic, copy, readwrite) NSString *title;
+@end
+
+@interface SBWiFiManager
+- (id)sharedInstance;
+- (void)setWiFiEnabled: (BOOL)enabled;
+- (bool)wiFiEnabled;
+@end
+
+@interface BluetoothManager
+- (id)sharedInstance;
+- (void)setEnabled: (BOOL)enabled;
+- (bool)enabled;
+- (void)setPowered: (BOOL)powered;
+- (bool)powered;
 @end
