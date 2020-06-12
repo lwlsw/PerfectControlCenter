@@ -11,7 +11,7 @@ static BOOL shouldEditMusicStyle = YES;
 
 	%hook CCUIConnectivityModuleViewController
 
-	- (void)viewWillLayoutSubviews
+	- (void)viewDidLayoutSubviews
 	{
 		%orig;
 
@@ -23,7 +23,7 @@ static BOOL shouldEditMusicStyle = YES;
 				viewControllers = [self portraitButtonViewControllers];
 			else 
 				viewControllers = [self landscapeButtonViewControllers];
-			
+
 			if(viewControllers)
 			{
 				CGSize buttonSize = [self _compressedButtonSize];
@@ -133,51 +133,20 @@ static BOOL shouldEditMusicStyle = YES;
 
 	%hook MRPlatterViewController
 
-	- (void)_updateOnScreenForStyle: (NSInteger)style
-	{
-		if([self isOnControlCenter] && shouldEditMusicStyle)
-			%orig(3);
-		else
-			%orig;
-	}
-
-	- (void)_updateSecondaryStringFormat
-	{
-		if([self isOnControlCenter] && shouldEditMusicStyle)
-			MSHookIvar<NSInteger>(self, "_style") = 2;
-		
-		%orig;
-	}
-
 	- (void)setStyle: (NSInteger)style
-	{
-		if([self isOnControlCenter] && shouldEditMusicStyle)
-			%orig(1);
-		else
-			%orig;
-	}
-
-	- (void)_updateStyle
 	{
 		if([self isOnControlCenter])
 		{
 			[[self nowPlayingHeaderView] setIsOnControlCenter: YES];
 			[[[self parentContainerView] containerView] setIsOnControlCenter: YES];
-		}	
-
-		%orig;
-	}
-
-	- (void)viewWillLayoutSubviews
-	{
-		%orig;
-
-		if([self isOnControlCenter] && shouldEditMusicStyle)
-		{
-			[[self parentContainerView] setHidden: NO];
-			[[self nowPlayingHeaderView] setFrame: CGRectMake(-7, 15, [[self view] bounds].size.width + 7, [[[self nowPlayingHeaderView] artworkBackground] frame].size.height)];
-			[[self parentContainerView] setFrame: CGRectMake(0, [[self nowPlayingHeaderView] frame].size.height + [[self nowPlayingHeaderView] frame].origin.y, [[self view] bounds].size.width, [[self view] bounds].size.height - ([[self nowPlayingHeaderView] frame].size.height + [[self nowPlayingHeaderView] frame].origin.y))];
+			
+			if(shouldEditMusicStyle)
+				%orig(1);
+			else
+				%orig;
 		}
+		else
+			%orig;
 	}
 
 	- (void)viewDidLayoutSubviews
@@ -187,7 +156,7 @@ static BOOL shouldEditMusicStyle = YES;
 		if([self isOnControlCenter] && shouldEditMusicStyle)
 		{
 			[[self nowPlayingHeaderView] setFrame: CGRectMake(-7, 15, self.view.bounds.size.width + 7, [[[self nowPlayingHeaderView] artworkBackground] frame].size.height)];
-			[[self parentContainerView] setFrame: CGRectMake(0, [[self nowPlayingHeaderView] frame].size.height + [[self nowPlayingHeaderView] frame].origin.y, [[self view] bounds].size.width, [[self view] bounds].size.height - ([[self nowPlayingHeaderView] frame].size.height + [[self nowPlayingHeaderView] frame].origin.y))];
+			[[self parentContainerView] setFrame: CGRectMake(0, [[self nowPlayingHeaderView] frame].origin.y + [[self nowPlayingHeaderView] frame].size.height, [[self view] bounds].size.width, [[self view] bounds].size.height - ([[self nowPlayingHeaderView] frame].size.height + [[self nowPlayingHeaderView] frame].origin.y))];
 		}
 	}
 
@@ -239,9 +208,6 @@ static BOOL shouldEditMusicStyle = YES;
 			{
 				[[self routeLabel] setAlpha: 0];
 
-				[[self launchNowPlayingAppButton] setFrame: CGRectMake(0, 0, [[self artworkView] bounds].size.height * 1.1, [[self artworkView] bounds].size.height * 1.1)];
-				[[self launchNowPlayingAppButton] setCenter: [[self artworkView] center]];
-
 				UIVisualEffectView *primaryVisualEffectView = [containerView primaryVisualEffectView];
 				if([primaryVisualEffectView superview] != self)
 					[self addSubview: primaryVisualEffectView];
@@ -277,11 +243,6 @@ static BOOL shouldEditMusicStyle = YES;
 				[[self secondaryMarqueeView] setAlpha: 0.75];
 				[[self secondaryMarqueeView] setTransform: CGAffineTransformMakeScale(0.8, 0.8)];
 				[[[self secondaryMarqueeView] layer] setAnchorPoint: CGPointMake(0, 0)];
-
-				if(![[self artworkView] image])
-					[[self placeholderArtworkView] setAlpha: 1];
-				else
-					[[self placeholderArtworkView] setAlpha: 0];
 			}
 			else
 			{
@@ -300,6 +261,8 @@ static BOOL shouldEditMusicStyle = YES;
 		if([self isOnControlCenter] && shouldEditMusicStyle) 
 		{
 			CGRect titleFrame = [[self routeLabel] frame];
+
+			[[self launchNowPlayingAppButton] setHidden: NO];
 
 			CGRect primaryFrame = [[self primaryMarqueeView] frame];
 			CGRect secondaryFrame = [[self secondaryMarqueeView] frame];
