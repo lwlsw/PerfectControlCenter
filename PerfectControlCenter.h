@@ -1,3 +1,7 @@
+@interface UIView ()
+- (id)_viewControllerForAncestor;
+@end
+
 @interface MTMaterialView : UIView
 @end
 

@@ -26,12 +26,25 @@ static BOOL bluetoothEnabled;
 	{
 		%orig;
 
+		BOOL tvModule = NO;
+		for(UIView *subview in [self subviews])
+		{
+			if([[subview _viewControllerForAncestor] isKindOfClass: %c(TVRMContentViewController)])
+			{
+				tvModule = YES;
+				break;
+			}
+		}
+
 		BOOL expanded = MSHookIvar<BOOL>(self, "_expanded");
 		int radius = expanded ? 65 : 34;
 		int numberOfSelfSubviews = [[self subviews] count];
 		
-		[self setClipsToBounds: YES];
-		[[self layer] setCornerRadius: radius];
+		if(!tvModule || !expanded)
+		{
+			[self setClipsToBounds: YES];
+			[[self layer] setCornerRadius: radius];
+		}
 
 		if(numberOfSelfSubviews == 1)
 		{
