@@ -12,7 +12,7 @@
         PCCAppearanceSettings *appearanceSettings = [[PCCAppearanceSettings alloc] init];
         self.hb_appearanceSettings = appearanceSettings;
         self.respringButton = [[UIBarButtonItem alloc] initWithTitle: @"Respring" style: UIBarButtonItemStylePlain target: self action: @selector(respring)];
-        self.respringButton.tintColor = [UIColor blackColor];
+        self.respringButton.tintColor = [UIColor whiteColor];
         self.navigationItem.rightBarButtonItem = self.respringButton;
 
         self.navigationItem.titleView = [UIView new];
@@ -21,7 +21,7 @@
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         self.titleLabel.text = @"PerfectControlCenter";
 		self.titleLabel.alpha = 0.0;
-        self.titleLabel.textColor = [UIColor blackColor];
+        self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview: self.titleLabel];
 
